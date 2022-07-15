@@ -1,0 +1,21 @@
+{
+  "name": "quran-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "encoding-japanese": "^2.0.0",
+    "express": "^4.17.3",
+    "express-ejs-layouts": "^2.5.1",
+    "iconv-lite": "^0.6.3",
+    "node-fetch": "^3.2.8",
+    "nodemon": "^2.0.19",
+    "request": "^2.88.2"
+  }
+}

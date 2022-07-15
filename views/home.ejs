@@ -1,0 +1,62 @@
+<main class="container-fluid d-flex justify-content-center align-items-center">
+	<div class="container ayah-container d-flex justify-content-center flex-column">
+		<div class="top-container d-flex justify-content-space-between align-items-center">
+			<div class="btns d-flex">
+				<i id="player" class="fa-solid fa-play" onclick="play()"></i>
+				<i id="pause" class="fa-solid fa-pause" onclick="pause()"></i>
+			</div>
+			<p class="fs-3">القارئ الشيخ: مشاري راشد العفاسي</p>
+		</div>
+
+		<audio id="audio" class="d-none" controls src="<%=audio%>"></audio>
+		<p class="fs-1"><%= ayahText %> <span class="fs-3">(<%= ayahNumber %>)</span></p>
+		<div class="ayah-prop fs-4"><span><%= surah %></span> <span>الجزء <%= juz %> </span><span>صفحة رقم <%= pageNumber %></span></div>
+		<span class="tafseer-btn btn mt-3 py-2" onclick="myFunction()">عرض التفسير</span>
+		<div class="tafsir-container">
+			<p class=""><%= tafsir%></p>
+			<span>تفسير المیسر</span>
+		</div>
+	</div>
+</main>
+<script>
+	const isPlaying = (audElem) => {
+		return !audElem.paused;
+	};
+	function myFunction() {
+		console.log("done");
+		document.querySelector(".tafsir-container").classList.toggle("active");
+	}
+
+	let audio = document.getElementById("audio");
+	function play() {
+		let playBtn = document.getElementById("player");
+		if (audio.currentTime == 0) {
+			audio.play();
+			playBtn.classList.remove("fa-play");
+			playBtn.classList.add("fa-stop");
+			console.log("wtf");
+		} else {
+			playBtn.classList.remove("fa-stop");
+			playBtn.classList.add("fa-play");
+			audio.pause();
+			audio.currentTime = 0;
+		}
+	}
+
+	function pause() {
+		const pauseBtn = document.getElementById("pause");
+		if (audio.currentTime == 0) {
+			return;
+		} else {
+			if (isPlaying(audio) == false) {
+				audio.play();
+				pauseBtn.classList.add("fa-pause");
+				pauseBtn.classList.remove("fa-play");
+			} else if (isPlaying(audio) == true) {
+				audio.pause();
+				pauseBtn.classList.remove("fa-pause");
+				pauseBtn.classList.add("fa-play");
+			}
+		}
+	}
+</script>
