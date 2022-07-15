@@ -1,0 +1,85 @@
+@font-face {
+   font-family: "Quranic";
+   src: url("Al Qalam Quran.ttf") format('truetype');;
+}
+body{
+   background-color: #F0EBE3;
+   min-height: 100vh;
+}
+main{
+   min-height: 80vh;
+}
+nav{
+   background-color: #E4DCCF;
+   
+}
+nav a{
+   color: #576F72 !important;
+}
+.ayah-container{
+   /* transform: translateY(-50%); */
+   position: relative;
+   /* margin-top: 30%; */
+   text-align: right;
+   width: 700px;
+   min-height: 100px;
+   height: auto;
+   padding: 30px;
+   border: 1px solid #576F72 ;
+   border-radius: 20px;
+   -webkit-box-shadow: 0px 7px 15px 1px rgba(0,0,0,0.3);
+   -moz-box-shadow: 0px 7px 15px 1px rgba(0,0,0,0.3);
+   box-shadow: 0px 7px 15px 1px rgba(0,0,0,0.3);
+}
+ .ayah-container p{
+   font-size: 2rem;
+   color: #576F72 !important;
+} 
+.ayah-container>p,.ayah-prop>span,.top-container p{
+   font-family: "Quranic";
+   width: 100%;
+}
+.ayah-prop span{
+   margin: 0 5px;
+   color: #7D9D9C !important;
+}
+.tafseer-btn{
+   color: #576F72;
+   font-weight: 500;
+}
+.tafseer-btn:hover{
+   background-color:#576F72 ;
+   color: #fff;
+}
+.tafsir-container{
+   overflow: hidden;
+   height: 0px;
+   opacity: 0;
+   padding: 0;
+   margin: 0;
+   /* display: none; */
+   transition-duration:500ms, 300ms;
+   transition-delay:200ms,0ms;
+   transition-timing-function: ease-out;
+   transition-property: opacity,height;
+}
+.tafsir-container.active{
+   /* display: block; */
+   height: 100%;
+   opacity: 1;
+   margin: 15px 0;
+}
+.fa-play,.fa-pause,.fa-stop{
+   cursor: pointer;
+   color: #576F72;
+}
+.btns{
+   gap: 7px;
+   font-size: 1.50rem;
+  
+
+}
+.top-container p,.tafsir-container span{
+   color: #7D9D9C !important;
+   margin: 0;
+}

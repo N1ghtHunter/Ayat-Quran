@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta lang="ar" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<input type="button" value="PLAY" onclick="play()" />
+		<audio id="audio" controls src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1000.mp3">quran</audio>
+		<form action="/" method="post">
+			<label for="cityInput">City Name:</label>
+			<input type="text" name="cityName" id="cityInput" />
+			<button type="submit">Go</button>
+		</form>
+		<script>
+			function play() {
+				var audio = document.getElementById("audio");
+				if (audio.currentTime == 0) audio.play();
+				else {
+					audio.pause();
+					audio.currentTime = 0;
+				}
+			}
+		</script>
+	</body>
+</html>
