@@ -57,32 +57,89 @@
 					<i id="player" class="fa-solid fa-play" onclick="play()"></i>
 				</div>
 			</div>
-			<audio id="audio" class="d-none" controls src="<%=audio%>"></audio>
-			<p class="fs-1"><%= ayahText %> <span class="fs-3">(<%= ayahNumber %>)</span></p>
-			<div class="ayah-prop fs-4"><span><%= surah %></span> <span>الجزء <%= juz %> </span><span>صفحة رقم <%= pageNumber %></span></div>
+			<audio id="audio" class="d-none" controls src=""></audio>
+			<p class="fs-1 text-center ayat" onclick="ayahPlay(this.id)" id="ayah-0">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+			<p class="fs-1">
+				<span class="ayat" onclick="ayahPlay(this.id)" id="ayah-1">
+					<%= surahText[0].replace('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', ''); %>
+				</span>
+				<span class="fs-4"> (<%= 1 %>) </span>
+				<% for( let index = 1; index < surahText.length; index++ ) { %>
+				<span class="ayat" onclick="ayahPlay(this.id)" id="ayah-<%=index+1%>"><%= surahText[index] %></span
+				><span class="fs-4"> (<%=index+1%>) </span>
+				<% } %>
+			</p>
+			<div class="ayah-prop fs-4">
+				<span><%= surah %></span> <span>الجزء <%= juz %> </span><span>سورة رقم <%= numberInQuran %></span
+				><span>عدد اياتها <%= numberOfAyahs %> </span>
+			</div>
 			<span class="tafseer-btn btn mt-3 py-2" onclick="tafsirActive()">عرض التفسير</span>
 			<div class="tafsir-container">
-				<p class=""><%= tafsir%></p>
+				<% for( let index = 0; index < tafsir.length; index++ ) { %>
+				<p class=""><%= tafsir[index]%> (<%= index+1 %>)</p>
+				<% } %>
 				<span>تفسير المیسر</span>
 			</div>
 		</div>
 	</main>
 	<script>
+		document.querySelector(".nav-link.active").classList.remove("active");
 		const isPlaying = (audElem) => {
 			return !audElem.paused;
 		};
 		function tafsirActive() {
-			console.log("done");
 			document.querySelector(".tafsir-container").classList.toggle("active");
 		}
 		let audio = document.getElementById("audio");
+		var audioArray = <%-JSON.stringify(audioArray) %>;
+		audio.src = "https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3";
+		var index = 0;
+		// audio.play();
+		var allayat = document.querySelectorAll(".ayat");
+		function ayahPlay(ele){
+			const pauseBtn = document.getElementById("pause");
+			const playBtn = document.getElementById("player");
+			allayat.forEach(ayah => {
+				ayah.classList.remove("active")
+			});
+			playBtn.classList.remove("fa-play");
+			playBtn.classList.add("fa-stop");
+			pauseBtn.classList.remove("fa-play");
+			pauseBtn.classList.add("fa-pause");
+			var clicked_id = ele
+			var clicked_idNum = Number(ele.replace('ayah-', '').trim());
+			if(clicked_idNum===0){
+				audio.src = "https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3";
+			}else{
+				audio.src = audioArray[clicked_idNum-1];
+			}
+			const activeAyah = document.getElementById(clicked_id);
+			activeAyah.classList.add("active");
+			index = clicked_idNum;
+			audio.play();
+		}
+		audio.onended = function () {
+			activeAyah = document.getElementById("ayah-"+index);
+			activeAyah.classList.remove("active");
+			if (index < audioArray.length) {
+				if (audioArray[index] === "https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3") {
+					index++;
+				}
+				audio.src = audioArray[index];
+				audio.play();
+				index++;
+			}
+			activeAyah = document.getElementById("ayah-"+index)
+			activeAyah.classList.add("active");
+		};
 		function play() {
 			var playBtn = document.getElementById("player");
 			const pauseBtn = document.getElementById("pause");
 			pauseBtn.classList.remove("fa-play");
-			pauseBtn.classList.add("fa-pause");
+					pauseBtn.classList.add("fa-pause");
 			if (audio.currentTime == 0) {
 				audio.play();
+				document.getElementById("ayah-0").classList.add("active");
 				playBtn.classList.remove("fa-play");
 				playBtn.classList.add("fa-stop");
 			} else {
@@ -90,7 +147,11 @@
 				playBtn.classList.add("fa-play");
 				audio.pause();
 				audio.src = "https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3";
+				index = 0;
 				audio.currentTime = 0;
+				allayat.forEach(ayah => {
+				ayah.classList.remove("active")
+			});
 			}
 		}
 		function pause() {
