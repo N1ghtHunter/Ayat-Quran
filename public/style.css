@@ -1,85 +1,146 @@
 @font-face {
-   font-family: "Quranic";
-   src: url("Al Qalam Quran.ttf") format('truetype');;
+	font-family: "Quranic";
+	src: url("/Al Qalam Quran.ttf") format("truetype");
 }
-body{
-   background-color: #F0EBE3;
-   min-height: 100vh;
+body {
+	background-color: #f0ebe3;
+	min-height: 100vh;
+	direction: rtl;
 }
-main{
-   min-height: 80vh;
+main {
+	min-height: 80vh;
 }
-nav{
-   background-color: #E4DCCF;
-   
+.navbar-brand {
+	font-family: "Gulzar", serif;
+	font-size: 1.4rem;
+	gap: 6px;
+	margin-top: 8px;
 }
-nav a{
-   color: #576F72 !important;
+nav {
+	background-color: #e4dccf;
+	font-size: 1.25rem;
 }
-.ayah-container{
-   /* transform: translateY(-50%); */
-   position: relative;
-   /* margin-top: 30%; */
-   text-align: right;
-   width: 700px;
-   min-height: 100px;
-   height: auto;
-   padding: 30px;
-   border: 1px solid #576F72 ;
-   border-radius: 20px;
-   -webkit-box-shadow: 0px 7px 15px 1px rgba(0,0,0,0.3);
-   -moz-box-shadow: 0px 7px 15px 1px rgba(0,0,0,0.3);
-   box-shadow: 0px 7px 15px 1px rgba(0,0,0,0.3);
+nav a {
+	color: #576f72 !important;
 }
- .ayah-container p{
-   font-size: 2rem;
-   color: #576F72 !important;
-} 
-.ayah-container>p,.ayah-prop>span,.top-container p{
-   font-family: "Quranic";
-   width: 100%;
+.dropdown-item {
+	font-weight: 500;
 }
-.ayah-prop span{
-   margin: 0 5px;
-   color: #7D9D9C !important;
+.nav-link.active {
+	color: #7d9d9c !important;
+	border-bottom: 2px solid #7d9d9c;
 }
-.tafseer-btn{
-   color: #576F72;
-   font-weight: 500;
+.dropdown-menu {
+	background-color: #e4dccf;
+	font-size: 1.2rem;
+	max-height: 400px;
+	overflow-y: scroll;
+	text-align: right;
 }
-.tafseer-btn:hover{
-   background-color:#576F72 ;
-   color: #fff;
+.dropdown-item:hover {
+	background-color: #f0ebe3;
 }
-.tafsir-container{
-   overflow: hidden;
-   height: 0px;
-   opacity: 0;
-   padding: 0;
-   margin: 0;
-   /* display: none; */
-   transition-duration:500ms, 300ms;
-   transition-delay:200ms,0ms;
-   transition-timing-function: ease-out;
-   transition-property: opacity,height;
+.ayah-container {
+	position: relative;
+	text-align: right;
+	width: 700px;
+	min-height: 100px;
+	height: auto;
+	padding: 30px;
+	border: 1px solid #576f72;
+	border-radius: 20px;
+	-webkit-box-shadow: 0px 7px 15px 1px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 7px 15px 1px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 7px 15px 1px rgba(0, 0, 0, 0.3);
 }
-.tafsir-container.active{
-   /* display: block; */
-   height: 100%;
-   opacity: 1;
-   margin: 15px 0;
+.ayah-container p {
+	font-size: 2rem;
+	color: #576f72 !important;
 }
-.fa-play,.fa-pause,.fa-stop{
-   cursor: pointer;
-   color: #576F72;
+.ayah-container > p {
+	cursor: pointer;
 }
-.btns{
-   gap: 7px;
-   font-size: 1.50rem;
-  
+.ayat {
+	padding: 0px 10px;
+	border-radius: 30px;
+	transition: 200ms;
+}
+.ayat:hover,
+.ayat.active {
+	background-color: #e4dccf;
+}
+.ayah-container > p,
+.ayah-prop > span,
+.top-container p {
+	font-family: "Quranic";
+	width: 100%;
+}
+.ayah-prop span {
+	margin: 0 5px;
+	color: #7d9d9c !important;
+}
+.tafseer-btn {
+	color: #576f72;
+	font-weight: 500;
+}
+.tafseer-btn:hover {
+	background-color: #576f72;
+	color: #fff;
+}
+.tafsir-container {
+	overflow: hidden;
+	height: 0px;
+	opacity: 0;
+	padding: 0;
+	margin: 0;
+	/* display: none; */
+	transition-duration: 500ms, 300ms;
+	transition-delay: 200ms, 0ms;
+	transition-timing-function: ease-out;
+	transition-property: opacity, height;
+}
+.tafsir-container.active {
+	/* display: block; */
+	height: 100%;
+	opacity: 1;
+	margin: 15px 0;
+}
+.fa-play,
+.fa-pause,
+.fa-stop {
+	cursor: pointer;
+	color: #576f72;
+}
+.btns {
+	gap: 7px;
+	font-size: 1.5rem;
+}
+.top-container p,
+.tafsir-container span {
+	color: #7d9d9c !important;
+	margin: 0;
+}
+::-webkit-scrollbar {
+	width: 16px;
+	background-color: #e4dccf;
+}
 
+::-webkit-scrollbar-track {
+	background-color: #f0ebe3;
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+	border-radius: 100px;
 }
-.top-container p,.tafsir-container span{
-   color: #7D9D9C !important;
-   margin: 0;
+::-webkit-scrollbar-thumb {
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #576f72;
+	border-radius: 100px;
+}
+footer {
+	position: fixed;
+	padding: 10px 10px 0px 10px;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	color: rgba(0, 0, 0, 0.5);
+	text-align: center;
 }

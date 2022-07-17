@@ -6,17 +6,18 @@ const ejs = require("ejs");
 const app = express();
 const fs = require("fs");
 const request = require("request");
-// const fetch = require("node-fetch");
-// var encoding = require('encoding-japanese');
-// var fileBuffer = fs.readFileSync('app.js');
-// console.log(encoding.detect(fileBuffer))
+var path = require("path");
+const { url } = require("inspector");
+
 //EJS
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 //Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+
+//app.use(express.static(__dirname)); // Current directory is root
+app.use(express.static(path.join(__dirname, "public"))); //  "public" off of current is root
 
 app.get("/", function (req, res) {
 	const randomAyah = Math.floor(Math.random() * 6232) + 1;
@@ -36,43 +37,100 @@ app.get("/", function (req, res) {
 			const pageNum = body.data[1].page;
 			const tafsirText = body.data[3].text;
 			const audio = body.data[4].audio;
-			res.render("home", {
-				ayahText: ayahText,
-				ayahNumber: ayahNum,
-				surah: surah,
-				juz: juz,
-				pageNumber: pageNum,
-				tafsir: tafsirText,
-				audio: audio,
+			request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
+				res.render("home", {
+					ayahText: ayahText,
+					ayahNumber: ayahNum,
+					surah: surah,
+					juz: juz,
+					pageNumber: pageNum,
+					tafsir: tafsirText,
+					audio: audio,
+					surahLinks: surahLinks.data,
+				});
 			});
 		}
 	});
-	// let ayahText = quranData.data[0].text;
-	// res.render("home", { ayahText: ayahText });
-	// https.get(url, function (response) {
-	// 	res.on("data", function (data) {
-	// 		const quranData = JSON.parse(data);
-	// 		const ayahText = quranData.data[0].text;
-	// 		console.log(ayahText);
-	// 		const surah = quranData.data[1].surah.name;
-	// 		const ayahNum = quranData.data[1].numberInSurah;
-	// 		const juz = quranData.data[1].juz;
-	// 		const pageNum = data[1].page;
-	// 		res.render("home", { ayahText: ayahText });
-	// 	});
-	// });
 });
-// app.post("/", function (req, res) {
-// 	// https.get(url, function (response) {
-// 	// 	console.log(response.statusCode);
-// 	// 	response.on("data", function (data) {
-// 	// 		res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-// 	// 		res.write(" <p>" + ayahText + "</p>", "utf-8");
-// 	// 		res.send();
-// 	// 	});
-// 	// });
+// app.get("/surah", (req, res) => {
+// 	const url = "https://api.alquran.cloud/v1/surah/114/editions/quran-uthmani,ar.muyassar,ar.alafasy";
+// 	let options = { json: true };
+// 	request(url, options, (error, response, body) => {
+// 		if (error) {
+// 			return console.log(error);
+// 		}
+// 		if (!error && res.statusCode == 200) {
+// 			const surahArray = body.data[0].ayahs;
+// 			const surahText = surahArray.map((i) => {
+// 				return i.text;
+// 			});
+// 			const surah = body.data[0].name;
+// 			const juz = body.data[0].ayahs[0].juz;
+// 			const numberInQuran = body.data[0].number;
+// 			const tafsirArray = body.data[1].ayahs;
+// 			const tafsirText = tafsirArray.map(function (i) {
+// 				return i.text;
+// 			});
+// 			const numberOfAyahs = body.data[2].numberOfAyahs;
+// 			const audioObject = body.data[2].ayahs;
+// 			const audioArray = audioObject.map((i) => {
+// 				return i.audio;
+// 			});
+// 			request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
+// 				res.render("surah", {
+// 					surahText: surahText,
+// 					surah: surah,
+// 					juz: juz,
+// 					numberInQuran: numberInQuran,
+// 					tafsir: tafsirText,
+// 					audioArray: audioArray,
+// 					surahLinks: surahLinks.data,
+// 				});
+// 			});
+// 		}
+// 	});
 // });
-
+app.get("/surah/:choosenSurah", (req, res) => {
+	let choosenSurah = req.params.choosenSurah.trim();
+	let url = `https://api.alquran.cloud/v1/surah/${choosenSurah}/editions/quran-uthmani,ar.muyassar,ar.alafasy`;
+	let options = { json: true };
+	request(url, options, (error, response, body) => {
+		if (error) {
+			return console.log(error);
+		}
+		if (!error && res.statusCode == 200) {
+			console.log(body);
+			const surahArray = body.data[0].ayahs;
+			const surahText = surahArray?.map((i) => {
+				return i.text;
+			});
+			const surah = body.data[0].name;
+			const juz = body.data[0].ayahs[0].juz;
+			const numberInQuran = body.data[0].number;
+			const tafsirArray = body.data[1].ayahs;
+			const tafsirText = tafsirArray?.map(function (i) {
+				return i.text;
+			});
+			const numberOfAyahs = body.data[2].numberOfAyahs;
+			const audioObject = body.data[2].ayahs;
+			const audioArray = audioObject?.map((i) => {
+				return i.audio;
+			});
+			request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
+				res.render("surah", {
+					surahText: surahText,
+					surah: surah,
+					juz: juz,
+					numberInQuran: numberInQuran,
+					tafsir: tafsirText,
+					audioArray: audioArray,
+					surahLinks: surahLinks.data,
+					numberOfAyahs: numberOfAyahs,
+				});
+			});
+		}
+	});
+});
 app.listen(process.env.PORT || 3000, function () {
 	console.log("server is running ON Port 3000");
 });
