@@ -99,7 +99,6 @@ app.get("/surah/:choosenSurah", (req, res) => {
 			return console.log(error);
 		}
 		if (!error && res.statusCode == 200) {
-			console.log(body);
 			const surahArray = body.data[0].ayahs;
 			const surahText = surahArray?.map((i) => {
 				return i.text;
