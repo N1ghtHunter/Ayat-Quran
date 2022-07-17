@@ -8,7 +8,7 @@ body {
 	direction: rtl;
 }
 main {
-	min-height: 80vh;
+	min-height: 70vh;
 }
 .navbar-brand {
 	font-family: "Gulzar", serif;
@@ -135,12 +135,15 @@ nav a {
 	background-color: #576f72;
 	border-radius: 100px;
 }
+::-webkit-scrollbar-thumb:hover{
+	background-color: #7d9d9c ;
+}
 footer {
-	position: fixed;
 	padding: 10px 10px 0px 10px;
 	bottom: 0;
 	width: 100%;
 	color: white;
 	color: rgba(0, 0, 0, 0.5);
 	text-align: center;
+	height: 60px;
 }
