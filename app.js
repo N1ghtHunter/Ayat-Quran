@@ -21,7 +21,10 @@ app.use(express.static(path.join(__dirname, "public"))); //  "public" off of cur
 
 app.get("/", function (req, res) {
 	const randomAyah = Math.floor(Math.random() * 6232) + 1;
-	const url = "https://api.alquran.cloud/v1/ayah/" + randomAyah + "/editions/quran-uthmani,en.asad,en.pickthall,ar.muyassar,ar.alafasy";
+	const url =
+		"https://api.alquran.cloud/v1/ayah/" +
+		randomAyah +
+		"/editions/quran-uthmani,en.asad,en.pickthall,ar.muyassar,ar.alafasy";
 	let options = { json: true };
 	request(url, options, (error, response, body) => {
 		if (error) {
@@ -52,44 +55,7 @@ app.get("/", function (req, res) {
 		}
 	});
 });
-// app.get("/surah", (req, res) => {
-// 	const url = "https://api.alquran.cloud/v1/surah/114/editions/quran-uthmani,ar.muyassar,ar.alafasy";
-// 	let options = { json: true };
-// 	request(url, options, (error, response, body) => {
-// 		if (error) {
-// 			return console.log(error);
-// 		}
-// 		if (!error && res.statusCode == 200) {
-// 			const surahArray = body.data[0].ayahs;
-// 			const surahText = surahArray.map((i) => {
-// 				return i.text;
-// 			});
-// 			const surah = body.data[0].name;
-// 			const juz = body.data[0].ayahs[0].juz;
-// 			const numberInQuran = body.data[0].number;
-// 			const tafsirArray = body.data[1].ayahs;
-// 			const tafsirText = tafsirArray.map(function (i) {
-// 				return i.text;
-// 			});
-// 			const numberOfAyahs = body.data[2].numberOfAyahs;
-// 			const audioObject = body.data[2].ayahs;
-// 			const audioArray = audioObject.map((i) => {
-// 				return i.audio;
-// 			});
-// 			request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
-// 				res.render("surah", {
-// 					surahText: surahText,
-// 					surah: surah,
-// 					juz: juz,
-// 					numberInQuran: numberInQuran,
-// 					tafsir: tafsirText,
-// 					audioArray: audioArray,
-// 					surahLinks: surahLinks.data,
-// 				});
-// 			});
-// 		}
-// 	});
-// });
+
 app.get("/surah/:choosenSurah", (req, res) => {
 	let choosenSurah = req.params.choosenSurah.trim();
 	let url = `https://api.alquran.cloud/v1/surah/${choosenSurah}/editions/quran-uthmani,ar.muyassar,ar.alafasy`;
@@ -128,6 +94,25 @@ app.get("/surah/:choosenSurah", (req, res) => {
 					numberOfAyahs: numberOfAyahs,
 				});
 			});
+		}
+	});
+});
+app.post("/search", async (req, res) => {
+	const searchQuery = req.body.searchQuery;
+	let url = `http://api.alquran.cloud/v1/search/${searchQuery}/all/quran-simple-clean`;
+	url = encodeURI(url);
+	const options = { json: true };
+	await request(url, options, (error, response, body) => {
+		if (error) {
+			return console.log(error);
+		}
+		if (!error && res.statusCode == 200) {
+			if (body.data) {
+				const { count, matches } = body.data;
+				request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
+					res.render("search", { matches, surahLinks: surahLinks.data });
+				});
+			}
 		}
 	});
 });

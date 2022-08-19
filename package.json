@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +21,14 @@
     "node-fetch": "^3.2.8",
     "nodemon": "^2.0.19",
     "request": "^2.88.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N1ghtHunter/Ayat-Quran.git"
+  },
+  "bugs": {
+    "url": "https://github.com/N1ghtHunter/Ayat-Quran/issues"
+  },
+  "homepage": "https://github.com/N1ghtHunter/Ayat-Quran#readme",
+  "description": ""
 }

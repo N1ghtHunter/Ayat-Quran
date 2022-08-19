@@ -45,6 +45,10 @@
 				</li>
 			</ul>
 		</div>
+		<form class="d-flex" action="/search" method="post">
+			<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchQuery" />
+			<button class="btn btn-outline-success" type="submit">Search</button>
+		</form>
 	</div>
 </nav>
 <div class="container my-5">
@@ -59,7 +63,9 @@
 			</div>
 			<audio id="audio" class="d-none" controls src="<%=audio%>"></audio>
 			<p class="fs-1"><%= ayahText %> <span class="fs-3">(<%= ayahNumber %>)</span></p>
-			<div class="ayah-prop fs-4"><span><%= surah %></span> <span>الجزء <%= juz %> </span><span>صفحة رقم <%= pageNumber %></span></div>
+			<div class="ayah-prop fs-4">
+				<span><%= surah %></span> <span>الجزء <%= juz %> </span><span>صفحة رقم <%= pageNumber %></span>
+			</div>
 			<span class="tafseer-btn btn mt-3 py-2" onclick="tafsirActive()">عرض التفسير</span>
 			<div class="tafsir-container">
 				<p class=""><%= tafsir%></p>
