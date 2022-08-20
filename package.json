@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "lint:ejs": "ejslint views/search.ejs"
   },
   "author": "",
   "license": "ISC",
@@ -13,13 +14,14 @@
     "node": "16.14.0"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "ejs": "^3.1.8",
+    "ejs-lint": "^1.2.2",
     "encoding-japanese": "^2.0.0",
     "express": "^4.17.3",
     "express-ejs-layouts": "^2.5.1",
     "iconv-lite": "^0.6.3",
     "node-fetch": "^3.2.8",
-    "nodemon": "^2.0.19",
     "request": "^2.88.2"
   },
   "repository": {
@@ -30,5 +32,7 @@
     "url": "https://github.com/N1ghtHunter/Ayat-Quran/issues"
   },
   "homepage": "https://github.com/N1ghtHunter/Ayat-Quran#readme",
-  "description": ""
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }

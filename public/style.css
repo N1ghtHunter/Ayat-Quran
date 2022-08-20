@@ -2,6 +2,10 @@
 	font-family: "Quranic";
 	src: url("/Al Qalam Quran.ttf") format("truetype");
 }
+.btn:focus,.btn:active {
+	outline: none;
+	box-shadow: none;
+  }
 body {
 	background-color: #f0ebe3;
 	min-height: 100vh;
@@ -105,10 +109,45 @@ nav a {
 	opacity: 1;
 	margin: 15px 0;
 }
+.search-box{
+	gap: 15px;
+}
+.search-box input{
+	border-color: #576f72 !important;
+	background-color: #f0ebe3;
+}
+.search-box input:focus{
+	outline: none;
+	box-shadow: none;
+}
+.search-box button{
+	background-color: #f0ebe3;
+	color: #576f72 !important;
+	border-color: #576f72 !important;
+}
+.search-box button:active{
+	color: #fff !important;
+	background-color: #576f72 !important;
+	border-color: #576f72 !important;
+}
+.search-box button:hover{
+	color: #fff !important;
+	background-color: #576f72 !important;
+	border-color: #576f72 !important;
+}
 .search-result{
 	padding-bottom: 1.4rem;
 	margin-bottom: 1.4rem;
 	border-bottom: 1px solid #7d9d9c;
+}
+.search-result > p{
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 30px;
+	transition: 300ms;
+}
+.search-result > p:hover{
+	background-color: #e4dccf;
 }
 .fa-play,
 .fa-pause,
