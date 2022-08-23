@@ -8,6 +8,8 @@
   }
 body {
 	background-color: #f0ebe3;
+	position: relative;
+	height: 100%;
 	min-height: 100vh;
 	direction: rtl;
 }
@@ -183,11 +185,28 @@ nav a {
 	background-color: #7d9d9c ;
 }
 footer {
-	padding: 10px 10px 0px 10px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	padding: 10px;
+	position: absolute;
 	bottom: 0;
 	width: 100%;
-	color: white;
-	color: rgba(0, 0, 0, 0.5);
+	background-color: #e4dccf;
+	color: #576f72 !important;
 	text-align: center;
-	height: 60px;
+	height: 80px;
+}
+footer p{
+	margin-bottom: 0.3rem;
+}
+footer a,footer p a{
+	font-weight: 700;
+	text-decoration: none;
+	color: #576f72 !important;
+	transition: scale 500ms ease-in-out;
+}
+footer a:hover{
+	scale: 1.5;
 }

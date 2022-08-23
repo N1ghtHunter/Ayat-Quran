@@ -21,7 +21,7 @@ app.use(cookieParser());
 //app.use(express.static(__dirname)); // Current directory is root
 app.use(express.static(path.join(__dirname, "public"))); //  "public" off of current is root
 
-app.get("/", function (req, res) {
+app.get("/", function (req, res, next) {
 	var context = req.cookies["context"];
 	var url;
 	res.clearCookie("context", { httpOnly: true });
@@ -39,28 +39,28 @@ app.get("/", function (req, res) {
 	}
 	let options = { json: true };
 	request(url, options, (error, response, body) => {
-		if (error) {
-			return console.log(error);
+		if (error || body.code != 200) {
+			console.log(error);
+			next(error);
 		}
-
 		if (!error && res.statusCode == 200) {
 			// do something with JSON, using the 'body' variable
 			const ayahText = body.data[0].text;
-			const ayahNum = body.data[1].numberInSurah;
+			const ayahNumber = body.data[1].numberInSurah;
 			const surah = body.data[1].surah.name;
 			const juz = body.data[1].juz;
-			const pageNum = body.data[1].page;
-			const tafsirText = body.data[3].text;
+			const pageNumber = body.data[1].page;
+			const tafsir = body.data[3].text;
 			const audio = body.data[4].audio;
-			request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
+			surahLinks().then((surahLinks) => {
 				res.render("home", {
-					ayahText: ayahText,
-					ayahNumber: ayahNum,
-					surah: surah,
-					juz: juz,
-					pageNumber: pageNum,
-					tafsir: tafsirText,
-					audio: audio,
+					ayahText,
+					ayahNumber,
+					surah,
+					juz,
+					pageNumber,
+					tafsir,
+					audio,
 					surahLinks: surahLinks.data,
 				});
 			});
@@ -72,13 +72,14 @@ app.post("/", (req, res) => {
 	res.cookie("context", chosenAyah, { httpOnly: true });
 	res.redirect("/");
 });
-app.get("/surah/:choosenSurah", (req, res) => {
+app.get("/surah/:choosenSurah", (req, res, next) => {
 	let choosenSurah = req.params.choosenSurah.trim();
 	let url = `https://api.alquran.cloud/v1/surah/${choosenSurah}/editions/quran-uthmani,ar.muyassar,ar.alafasy`;
 	let options = { json: true };
 	request(url, options, (error, response, body) => {
-		if (error) {
-			return console.log(error);
+		if (error || body.code != 200) {
+			console.log(body.data[0]);
+			next(body.data[0]);
 		}
 		if (!error && res.statusCode == 200) {
 			const surahArray = body.data[0].ayahs;
@@ -89,7 +90,7 @@ app.get("/surah/:choosenSurah", (req, res) => {
 			const juz = body.data[0].ayahs[0].juz;
 			const numberInQuran = body.data[0].number;
 			const tafsirArray = body.data[1].ayahs;
-			const tafsirText = tafsirArray?.map(function (i) {
+			const tafsir = tafsirArray?.map(function (i) {
 				return i.text;
 			});
 			const numberOfAyahs = body.data[2].numberOfAyahs;
@@ -97,34 +98,35 @@ app.get("/surah/:choosenSurah", (req, res) => {
 			const audioArray = audioObject?.map((i) => {
 				return i.audio;
 			});
-			request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
+			surahLinks().then((surahLinks) => {
 				res.render("surah", {
-					surahText: surahText,
-					surah: surah,
-					juz: juz,
-					numberInQuran: numberInQuran,
-					tafsir: tafsirText,
-					audioArray: audioArray,
+					surahText,
+					surah,
+					juz,
+					numberInQuran,
+					tafsir,
+					audioArray,
 					surahLinks: surahLinks.data,
-					numberOfAyahs: numberOfAyahs,
+					numberOfAyahs,
 				});
 			});
 		}
 	});
 });
-app.post("/search", async (req, res) => {
+app.post("/search", async (req, res, next) => {
 	const searchQuery = req.body.searchQuery;
 	let url = `http://api.alquran.cloud/v1/search/${searchQuery}/all/quran-simple-clean`;
 	url = encodeURI(url);
 	const options = { json: true };
 	await request(url, options, (error, response, body) => {
 		if (error) {
-			return console.log(error);
+			console.log(error);
+			next(error);
 		}
 		if (!error && res.statusCode == 200) {
 			if (body) {
 				const { count, matches } = body.data;
-				request("http://api.alquran.cloud/v1/surah", options, (err, response, surahLinks) => {
+				surahLinks().then((surahLinks) => {
 					res.render("search", { matches, surahLinks: surahLinks.data });
 				});
 			} else {
@@ -133,7 +135,7 @@ app.post("/search", async (req, res) => {
 		}
 	});
 });
-
+var surahLinks = require("./apifetch");
 app.use(function (req, res, next) {
 	var err = new Error("Not Found");
 	err.status = 404;
@@ -148,20 +150,19 @@ app.use(function (req, res, next) {
 if (app.get("env") === "development") {
 	app.use(function (err, req, res, next) {
 		res.status(err.status || 500);
-		res.render("error", {
-			message: err.message,
-			error: err,
+		surahLinks().then((surahLinks) => {
+			console.log(err);
+			res.render("error", { surahLinks: surahLinks.data, error: err });
 		});
 	});
 }
-
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
 	res.status(err.status || 500);
-	res.render("error", {
-		message: err.message,
-		error: {},
+	surahLinks().then((surahLinks) => {
+		console.log(err);
+		res.render("error", { surahLinks: surahLinks.data, error: err });
 	});
 });
 app.listen(process.env.PORT || 3000, function () {

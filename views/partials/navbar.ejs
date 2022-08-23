@@ -26,6 +26,7 @@
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="/">الرئيسية</a>
 				</li>
+				<% if (surahLinks) { %>
 				<li class="nav-item dropdown me-0 me-lg-3">
 					<a
 						class="nav-link dropdown-toggle"
@@ -43,6 +44,7 @@
 						<% }); %>
 					</ul>
 				</li>
+				<% } %>
 			</ul>
 			<form class="d-flex search-box pe-4" action="/search" method="post">
 				<input class="form-control me-2" type="search" placeholder="ابحث هنا" aria-label="Search" name="searchQuery" />
