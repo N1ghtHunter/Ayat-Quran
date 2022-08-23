@@ -202,7 +202,7 @@ footer p{
 	margin-bottom: 0.3rem;
 }
 footer a,footer p a{
-	font-weight: 700;
+	font-weight: 600;
 	text-decoration: none;
 	color: #576f72 !important;
 	transition: scale 500ms ease-in-out;
